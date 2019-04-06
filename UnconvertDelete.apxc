@@ -1,0 +1,22 @@
+global class UnconvertDelete {
+webservice static Id deletedId;
+      webservice static void deleteMethod(List<Id> deleteIds) { 
+          system.debug('inside deleteMethod '+deleteIds);
+           Database.emptyRecycleBin(deleteIds);     
+          system.debug('executed!!');
+    }
+    
+    webservice static Id fetchLead(String accName,String lastName) { 
+          system.debug('inside fetchLead '+accName+'--'+lastName);
+        List<Lead> leadsDelete=[Select Id From Lead Where status='Closed - Converted' and company=:accName  and LastName=:lastName];
+       
+      system.debug('leadsDelete '+leadsDelete);
+            for(Lead l:leadsDelete)
+            {
+               deletedId=l.Id;
+            }
+           system.debug('executed deleteLead!! '+deletedId);
+       
+        return deletedId;
+    }
+}
